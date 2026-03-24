@@ -4,6 +4,8 @@
 This [dbt](https://docs.getdbt.com/docs/introduction) package contains macros to assert test and documentation coverage from
 `dbt_project.yml` configuration settings.
 
+## This fork has a works-for-me fix to provide **dbt fusion** compatibility by moving the 3rd party YAML under meta tags.
+
 ## Table of Contents
   - [Install](#install)
   - [Configurations](#configurations)
