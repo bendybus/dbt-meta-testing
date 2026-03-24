@@ -5,7 +5,7 @@
 {% macro default__validate_required_tests(models_to_validate) %}
 
     {# /*
-    Validate that all +required_tests configs are either dict or None 
+    Validate that all +required_tests configs are either dict or None
     and that all keys in a dict are defined tests.
     */ #}
 
@@ -17,28 +17,28 @@
 
     {% for model in models_to_validate %}
 
-        {% set config = model.config.required_tests %}
+        {% set config = model.config.meta.required_tests %}
 
         {{ dbt_meta_testing.logger('config is: ' ~ config) }}
 
         -- Validate that config is dict or none
         {% if config is mapping %}
 
-            {% for k in config.keys() %} 
+            {% for k in config.keys() %}
 
                 {% do all_required_tests.append(k) %}
 
             {% endfor %}
-        
+
         {% elif config is none %}
-            
+
             -- Pass
             {{ dbt_meta_testing.logger("model '" ~ model.name ~ "' has required_tests=null") }}
-        
+
         {% else %}
 
             {{ return(dbt_meta_testing.errors_invalid_config_tests(config, model.name)) }}
-        
+
         {% endif %}
 
     {% endfor %}
@@ -52,11 +52,11 @@
     -- Fetch unique defined tests from graph
     {% set unique_defined_tests = [] %}
 
-    {% for test_name in graph.nodes.values() 
+    {% for test_name in graph.nodes.values()
         | selectattr("resource_type", "equalto", "test")
         | selectattr("test_metadata", "defined")
         | map(attribute="test_metadata")
-        | map(attribute="name") 
+        | map(attribute="name")
         | unique %}
 
         {{ dbt_meta_testing.logger('test name ' ~ loop.index ~ ' ' ~ test_name) }}

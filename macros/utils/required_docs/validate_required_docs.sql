@@ -12,7 +12,7 @@
 
     {% for model in models_to_validate %}
 
-        {% if not model.config.required_docs is boolean %}
+        {% if not model.config.meta.required_docs is boolean %}
 
             {{ return(dbt_meta_testing.error_invalid_config_docs(config, model.name)) }}
 
