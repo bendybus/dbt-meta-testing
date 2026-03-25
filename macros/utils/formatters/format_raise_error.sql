@@ -4,14 +4,14 @@
 
 {% macro default__format_raise_error(error_to_raise) %}
 
-    {% if var("running_intergration_tests", false) is true %}
+    {% if var("running_integration_tests", false) is true %}
 
         {{ return(error_to_raise) }}
 
     {% else %}
 
         {{ exceptions.raise_compiler_error(error_to_raise) }}
-    
+
     {% endif %}
 
 {% endmacro %}

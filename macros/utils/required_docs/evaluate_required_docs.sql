@@ -14,9 +14,9 @@
 
     {% for model in models_to_evaluate %}
 
-        {% if model.config.required_docs==True and model.config.get("materialized", "") not in ("", "ephemeral")%}
-            
-            {% set model_columns = adapter.get_columns_in_relation(ref(model.package_name, model.name)) 
+        {% if model.config.meta.required_docs==True and model.config.get("materialized", "") not in ("", "ephemeral")%}
+
+            {% set model_columns = adapter.get_columns_in_relation(ref(model.package_name, model.name))
                 | map(attribute="column") | list %}
             {{ dbt_meta_testing.logger(model_columns | map(attribute="column") | list) }}
 
@@ -40,7 +40,7 @@
                         {% do missing_description_errors.append((model.name, column)) %}
 
                     {% endif %}
-                
+
                 {% else %}
 
                     {% do missing_columns_errors.append((model.name, column)) %}
@@ -48,7 +48,7 @@
                 {% endif %}
 
             {% endfor %}
-        
+
         {% endif %}
 
     {% endfor %}
@@ -61,8 +61,8 @@
         {{ dbt_meta_testing.logger(missing_description_errors) }}
 
         {% set result = dbt_meta_testing.error_required_docs(
-            missing_model_errors, 
-            missing_columns_errors, 
+            missing_model_errors,
+            missing_columns_errors,
             missing_description_errors
             )
         %}
